@@ -1,29 +1,43 @@
 // from data.js
 var tableData = data;
 
-var $tbody = document.querySelector("tbody");
-
-
 // YOUR CODE HERE!
-function LoadTable() {
-  
-  for (var i = 0; i < tableData.length; i++) {
+var table_body = d3.select("tbody");
+var table_row = table_body.append("tr");
+
+//CREATE TABLE
+function TableCreate(tableData){
+	table_body.html("");
+	
+	tableData.forEach(function(load_data){
+    
+    table_body.append("tr");
+
+    
+    Object.entries(load_data).forEach(function([key, value]){
+    insert = table_body.append("td").text(value);
     
 
-    var ufo = tableData[i];
-    var sighting = Object.keys(ufo);
-    
-    var $row = $tbody.insertRow(i);
-    for (var j = 0; j < sighting.length; j++) {
-      
-      var ufo_sighting = sighting[j];
-      var $cell = $row.insertCell(j);
-      $cell.innerText = ufo[ufo_sighting];
-    }
-  }
+    })
+});
+
+
+
 }
 
 
 
-// Render the table for the first time on page load
-LoadTable();
+function Search(){
+	
+	var date = d3.select("#datetime").property("value");
+	
+	if (date){
+	var filter_d = tableData.filter((sighting => sighting.datetime === date));
+	 }
+	 TableCreate(filter_d);
+	 }
+
+
+var lookup = d3.selectAll("#filter-btn").on("click", Search);
+
+TableCreate(tableData);
